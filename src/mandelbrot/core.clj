@@ -6,7 +6,7 @@
   (println x "Hello, World!"))
 
 
-(def max-iterations 100)
+(def max-iterations 255)
 (def step 0.002)
 
 (defn square-complex [[x y]]
@@ -41,6 +41,13 @@
                  (print ".")
                  (print "X"))))
     (println)))
+
+(defn mandelbrot-seq [minx miny stepx stepy maxx maxy]
+  (for [y (range miny maxy stepy)]
+    (for  [x (range minx maxx stepx)] 
+             (let [iterations (mandelbot [x y])]
+               iterations))
+    ))
 
 
 (defn -main [& args]
