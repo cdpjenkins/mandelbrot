@@ -39,7 +39,5 @@
                         )
               :on-close :hide)
        pack!
-       show!
-       println
-       ))
+       show!))
   )
