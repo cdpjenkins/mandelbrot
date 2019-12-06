@@ -10,6 +10,11 @@
 
 (def g (.getGraphics mandelbrot-image))
 
+(def stoopid-image-observer
+  (proxy [ImageObserver]
+      []
+    (imageUpdate []
+      (proxy-super imageUpdate))))
 
 (defn draw-mandie []
   (future (doseq [[y row] (map-indexed vector mandie)]
@@ -22,10 +27,7 @@
                            h (.getHeight c)
                            
                            ]
-                       (.drawImage g mandelbrot-image 0 0 (proxy [ImageObserver]
-                                             []
-                                           (imageUpdate []
-                                             (proxy-super imageUpdate)))))))
+                       (.drawImage g mandelbrot-image 0 0 stoopid-image-observer))))
 
 
 (comment
@@ -40,4 +42,6 @@
               :on-close :hide)
        pack!
        show!))
+
+  (draw-mandie)
   )
