@@ -16,7 +16,6 @@
         p (proxy [JPanel] []
             (paintComponent [g]
               ;(println "paint")
-              ; assumes array is filled in order, stops at first nil element
               (proxy-super paintComponent g)
               (loop [idx 0
                      arr @backing-array
@@ -55,7 +54,7 @@
     (aset @backing-array
           idx
           c)
-    (when (= x 0) ; repaint whole lines
+    (when (zero? x) ; repaint whole lines
       (.repaint @panel 0 y width 1))))
 
 (defn mandelbrot-pixel

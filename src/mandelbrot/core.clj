@@ -31,15 +31,6 @@
                             (iterate #(mandelbrot-step % c) [0 0]))))]
     iterations))
 
-(defn text-mandelbrot []
-  (doseq [y (range -1 1 step)]
-    (doseq  [x (range -2 1 step)] 
-             (let [iterations (mandelbrot [x y])]
-               (if (< iterations 99)
-                 (print ".")
-                 (print "X"))))
-    (println)))
-
 (defn- mandelbrot-set
   "Evaluate whether the imaginary numbers in the given range lie
   within the Mandelbrot set "
@@ -51,12 +42,25 @@
       (let [iterations (mandelbrot [x y])]
         (f iterations x-idx y-idx)))))
 
+(defn- mandelbrot-character
+  [iterations x y]
+  (if (< iterations 99)
+    (print ".")
+    (print "X"))
+  (when (zero? x)
+    (println)))
+
+(defn text-mandelbrot
+  []
+  (let [y [-1 1 step]
+        x [-2 1 step]]
+    (mandelbrot-set x y mandelbrot-character)))
+
 (defn- steps-count
   [[start end step]]
   (-> end
       (- start)
       (/ step)
-      ;(inc)
       (int)))
 
 (defn gui-mandelbrot
@@ -67,14 +71,6 @@
         height (steps-count y)]
     (d/init-draw width height)
     (mandelbrot-set x y d/mandelbrot-pixel)))
-
-(defn mandelbrot-seq [minx miny stepx stepy maxx maxy]
-  (for [y (range miny maxy stepy)]
-    (for  [x (range minx maxx stepx)]
-             (let [iterations (mandelbrot [x y])]
-               iterations))
-    ))
-
 
 (defn -main [& args]
   ;(text-mandelbrot)
